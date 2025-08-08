@@ -1,0 +1,83 @@
+{
+  "timestamp": "2025-08-08T00:44:07.791910",
+  "total_balance": -15559.12,
+  "accounts": [
+    {
+      "name": "Discover it Card",
+      "official_name": "Discover it Card",
+      "institution": "Discover Credit Card",
+      "type": "credit",
+      "subtype": "credit card",
+      "balance": 8708.87,
+      "min_due": "",
+      "due_date": "",
+      "apr": ""
+    },
+    {
+      "name": "Spending Account",
+      "official_name": "Spending Account",
+      "institution": "Ally Checkings and Savings",
+      "type": "depository",
+      "subtype": "checking",
+      "balance": 2811.9,
+      "min_due": "",
+      "due_date": "",
+      "apr": ""
+    },
+    {
+      "name": "Invest Simply",
+      "official_name": "Invest Simply",
+      "institution": "Ally Checkings and Savings",
+      "type": "investment",
+      "subtype": "brokerage",
+      "balance": 777.1489875000001,
+      "min_due": "",
+      "due_date": "",
+      "apr": ""
+    },
+    {
+      "name": "Savings Account",
+      "official_name": "Savings Account",
+      "institution": "Ally Checkings and Savings",
+      "type": "depository",
+      "subtype": "savings",
+      "balance": 640.44,
+      "min_due": "",
+      "due_date": "",
+      "apr": ""
+    },
+    {
+      "name": "Costco Anywhere Visa\u00ae\u00a0Card by Citi",
+      "official_name": "Costco Anywhere Visa\u00ae\u00a0Card by Citi",
+      "institution": "Costco Credit Card",
+      "type": "credit",
+      "subtype": "credit card",
+      "balance": 1703.52,
+      "min_due": "",
+      "due_date": "",
+      "apr": ""
+    },
+    {
+      "name": "My Best Buy\u00ae Visa\u00ae Card",
+      "official_name": "My Best Buy\u00ae Visa\u00ae Card",
+      "institution": "Bestbuy Credit Card",
+      "type": "credit",
+      "subtype": "credit card",
+      "balance": 6501.08,
+      "min_due": "",
+      "due_date": "",
+      "apr": ""
+    },
+    {
+      "name": "BOBS DISCOUNT FURNITURE ...2252",
+      "official_name": "BOBS DISCOUNT FURNITURE ...2252",
+      "institution": "Bobs Discount Furniture Credit Card",
+      "type": "credit",
+      "subtype": "credit card",
+      "balance": 2875.14,
+      "min_due": "",
+      "due_date": "",
+      "apr": ""
+    }
+  ]
+}
