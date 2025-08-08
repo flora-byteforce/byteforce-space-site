@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byteforce Budget Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+    h1 { color: #333; }
+    .section { margin-bottom: 30px; }
+    table { width: 100%%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #eee; }
+  </style>
+</head>
+<body>
+  <h1>💰 Byteforce Budget Summary</h1>
+
+  <div id="totals" class="section">
+    <h2>Totals</h2>
+    <ul id="summary-list"></ul>
+  </div>
+
+  <div id="accounts" class="section">
+    <h2>Accounts</h2>
+    <div id="account-groups"></div>
+  </div>
+
+  <script>
+    fetch("dashboard_data.json")
+      .then(response => response.json())
+      .then(data => {
+        const summaryList = document.getElementById("summary-list");
+        const groups = {};
+
+        summaryList.innerHTML += `<li><strong>Total Balance:</strong> $${data.total_balance.toFixed(2)}</li>`;
+        for (const type in data.balances_by_type) {
+          summaryList.innerHTML += `<li><strong>${type}:</strong> $${data.balances_by_type[type].toFixed(2)}</li>`;
+        }
+
+        for (const acct of data.accounts) {
+          if (!groups[acct.type]) groups[acct.type] = [];
+          groups[acct.type].push(acct);
+        }
+
+        const container = document.getElementById("account-groups");
+        for (const [type, accts] of Object.entries(groups)) {
+          const section = document.createElement("div");
+          section.innerHTML = `<h3>${type}</h3>`;
+
+          const table = document.createElement("table");
+          table.innerHTML = `<tr><th>Nickname</th><th>Name</th><th>Balance</th><th>Due Date</th><th>Min Due</th><th>APR</th></tr>`;
+          
+          for (const acct of accts) {
+            table.innerHTML += `
+              <tr>
+                <td>${acct.nickname}</td>
+                <td>${acct.name}</td>
+                <td>$${acct.balance.toFixed(2)}</td>
+                <td>${acct.due_date || "-"}</td>
+                <td>${acct.min_due || "-"}</td>
+                <td>${acct.apr || "-"}</td>
+              </tr>`;
+          }
+
+          section.appendChild(table);
+          container.appendChild(section);
+        }
+      })
+      .catch(error => {
+        console.error("Failed to load dashboard data:", error);
+      });
+  </script>
+</body>
+</html>
