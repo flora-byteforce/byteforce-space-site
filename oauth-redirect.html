@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Plaid OAuth Return</title>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+</head>
 <body>
-  <h1>OAuth Redirect</h1>
-  <p>If you're seeing this, the redirect is working!</p>
+  <p>Resuming Plaid Link…</p>
+  <script>
+    // Plaid will send you back here with oauth_state_id in the querystring.
+    const LINK_TOKEN = "PASTE_YOUR_LINK_TOKEN_HERE"; // must be the SAME link token as in link.html
+    Plaid.create({ token: LINK_TOKEN }).open();
+  </script>
 </body>
 </html>
