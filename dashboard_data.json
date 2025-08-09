@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-08T01:12:09.148245",
+  "timestamp": "2025-08-08T22:18:23.838207",
   "accounts": [
     {
       "name": "Discover it Card",
@@ -18,7 +18,7 @@
       "institution": "Ally Checkings and Savings",
       "type": "depository",
       "subtype": "checking",
-      "balance": 2811.9,
+      "balance": 2761.9,
       "min_due": "",
       "due_date": "",
       "apr": ""
@@ -29,7 +29,7 @@
       "institution": "Ally Checkings and Savings",
       "type": "investment",
       "subtype": "brokerage",
-      "balance": 777.1489875000001,
+      "balance": 777.8214011,
       "min_due": "",
       "due_date": "",
       "apr": ""
@@ -40,7 +40,7 @@
       "institution": "Ally Checkings and Savings",
       "type": "depository",
       "subtype": "savings",
-      "balance": 640.44,
+      "balance": 690.44,
       "min_due": "",
       "due_date": "",
       "apr": ""
