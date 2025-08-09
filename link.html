@@ -8,7 +8,7 @@
 <body>
   <button id="link-button">Connect Bank</button>
   <script>
-    const LINK_TOKEN = "PASTE_YOUR_LINK_TOKEN_HERE"; // same token used in oauth-redirect.html
+    const LINK_TOKEN = "link-production-ca876fe0-250e-49d3-99ee-c73bf2b02e5c"; // same token used in oauth-redirect.html
     const handler = Plaid.create({
       token: LINK_TOKEN,
       onSuccess: function(public_token, metadata) {
