@@ -1,25 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <title>Plaid Link</title>
-  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-</head>
-<body>
-  <button id="link-button">Connect Bank</button>
-  <script>
-    const LINK_TOKEN = "link-production-ca876fe0-250e-49d3-99ee-c73bf2b02e5c"; // same token used in oauth-redirect.html
-    const handler = Plaid.create({
-      token: LINK_TOKEN,
-      onSuccess: function(public_token, metadata) {
-        console.log("Public Token:", public_token);
-        alert("Public token printed to the browser console.");
-      },
-      onExit: function(err, metadata) {
-        if (err) console.error("Exit error:", err);
-      }
-    });
-    document.getElementById("link-button").onclick = () => handler.open();
-  </script>
-</body>
-</html>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<button id="link">Connect Bank</button>
+<script>
+  const LINK_TOKEN = "link-production-f307d548-16ab-4908-a50b-88a2ab93ed8b";
+
+  const handler = Plaid.create({
+    token: LINK_TOKEN,
+    onSuccess(public_token, metadata) {
+      console.log("Public Token:", public_token);
+      console.log("Success metadata:", metadata);
+      alert("Success. Public token is in the console.");
+    },
+    onExit(err, metadata) {
+      console.log("Exit err:", err);
+      console.log("Exit metadata:", metadata);
+      if (err) alert("Link exited: " + (err.display_message || err.error_message || "See console"));
+    },
+    onEvent(eventName, metadata) {
+      console.log("Link event:", eventName, metadata);
+      // Look for institution_id/name, mfa_type, error_code, status, link_session_id
+    }
+  });
+
+  document.getElementById("link").onclick = () => handler.open();
+</script>
