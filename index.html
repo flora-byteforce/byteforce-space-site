@@ -1,74 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plaid Link</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Byteforce Budget</title>
 
-  <!-- CSP update for Chase OAuth reCAPTCHA -->
+  <!-- CSP: allow Plaid + reCAPTCHA in case you add Link here later -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     connect-src https://*.plaid.com https://*.plaid.io https://www.google.com https://www.gstatic.com;
     script-src 'self' 'unsafe-inline' https://*.plaid.com https://www.google.com https://www.gstatic.com;
     frame-src https://*.plaid.com https://www.google.com;
+    img-src 'self' data: https://www.google.com https://www.gstatic.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com;
   ">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+    h1,h2,h3 { margin: 0 0 12px; }
+    .btn { display:inline-block; padding:10px 14px; border:1px solid #ccc; border-radius:8px; text-decoration:none; color:#111; }
+    .section { margin-top: 24px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid #eee; }
+    .muted { color:#666; font-size: 14px; }
+  </style>
 </head>
 <body>
-  <h1>💰 Byteforce Budget Summary</h1>
+  <h1>Byteforce Budget</h1>
+
+  <div class="section">
+    <a class="btn" href="./link.html">Connect Bank</a>
+    <p class="muted" style="margin-top:8px;">You’ll be redirected to your bank and returned here after approval.</p>
+  </div>
 
   <div id="totals" class="section">
     <h2>Totals</h2>
-    <ul id="summary-list"></ul>
+    <ul id="summary-list" class="muted">Loading…</ul>
   </div>
 
   <div id="accounts" class="section">
     <h2>Accounts</h2>
-    <div id="account-groups"></div>
+    <div id="account-groups" class="muted">Loading…</div>
   </div>
 
   <script>
+    // Optional dashboard render if you publish dashboard_data.json
     fetch("dashboard_data.json")
-      .then(response => response.json())
+      .then(r => r.json())
       .then(data => {
         const summaryList = document.getElementById("summary-list");
         const groups = {};
+        summaryList.classList.remove("muted");
+        document.getElementById("account-groups").classList.remove("muted");
 
-        summaryList.innerHTML += `<li><strong>Total Balance:</strong> $${data.total_balance.toFixed(2)}</li>`;
-        for (const type in data.balances_by_type) {
-          summaryList.innerHTML += `<li><strong>${type}:</strong> $${data.balances_by_type[type].toFixed(2)}</li>`;
+        summaryList.innerHTML = "";
+        summaryList.innerHTML += `<li><strong>Total Balance:</strong> $${Number(data.total_balance || 0).toFixed(2)}</li>`;
+        for (const type in (data.balances_by_type || {})) {
+          summaryList.innerHTML += `<li><strong>${type}:</strong> $${Number(data.balances_by_type[type] || 0).toFixed(2)}</li>`;
         }
 
-        for (const acct of data.accounts) {
+        (data.accounts || []).forEach(acct => {
           if (!groups[acct.type]) groups[acct.type] = [];
           groups[acct.type].push(acct);
-        }
+        });
 
         const container = document.getElementById("account-groups");
+        container.innerHTML = "";
         for (const [type, accts] of Object.entries(groups)) {
           const section = document.createElement("div");
           section.innerHTML = `<h3>${type}</h3>`;
 
           const table = document.createElement("table");
           table.innerHTML = `<tr><th>Nickname</th><th>Name</th><th>Balance</th><th>Due Date</th><th>Min Due</th><th>APR</th></tr>`;
-          
-          for (const acct of accts) {
+
+          accts.forEach(acct => {
             table.innerHTML += `
               <tr>
-                <td>${acct.nickname}</td>
-                <td>${acct.name}</td>
-                <td>$${acct.balance.toFixed(2)}</td>
+                <td>${acct.nickname ?? ""}</td>
+                <td>${acct.name ?? ""}</td>
+                <td>$${Number(acct.balance || 0).toFixed(2)}</td>
                 <td>${acct.due_date || "-"}</td>
                 <td>${acct.min_due || "-"}</td>
                 <td>${acct.apr || "-"}</td>
               </tr>`;
-          }
+          });
 
           section.appendChild(table);
           container.appendChild(section);
         }
       })
-      .catch(error => {
-        console.error("Failed to load dashboard data:", error);
+      .catch(() => {
+        document.getElementById("summary-list").textContent = "No dashboard_data.json yet (that’s ok).";
+        document.getElementById("account-groups").textContent = "No accounts to show yet.";
       });
   </script>
 </body>
