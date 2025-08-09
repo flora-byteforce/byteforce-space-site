@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Plaid OAuth Return</title>
+  <title>Plaid Link</title>
 
+  <!-- CSP: allow Plaid + Google reCAPTCHA (OAuth banks like Chase/Capital One) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     connect-src https://*.plaid.com https://*.plaid.io https://www.google.com https://www.gstatic.com;
@@ -14,29 +15,43 @@
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com;
   ">
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+    .btn { padding:10px 14px; border:1px solid #ccc; border-radius:8px; cursor:pointer; }
+    #status { margin-top:8px; color:#666; }
+    a { color: inherit; }
+  </style>
 </head>
 <body>
-  <p>Resuming bank connection…</p>
+  <h1>Connect a Bank</h1>
+  <button id="link-btn" class="btn">Connect Bank</button>
+  <p id="status"></p>
+  <p><a href="./index.html">Back to Dashboard</a></p>
+
   <script>
-    // Use the exact same link token as on your main page
-    const LINK_TOKEN = "link-production-eb548a1e-d5a4-44a7-9c1f-edbc41742720";
+    const LINK_TOKEN = "link-production-ad0c36ad-6657-4cc5-b6c6-be2c286ce953"; // update for each attempt
+    const statusEl = document.getElementById("status");
 
     const handler = Plaid.create({
       token: LINK_TOKEN,
-      // 👇 This is the key for OAuth resume on web
-      receivedRedirectUri: window.location.href
+      onSuccess(public_token, metadata) {
+        console.log("Public Token:", public_token);
+        console.log("Success metadata:", metadata);
+        statusEl.textContent = "Success. Public token is in the console. Paste it into your exchange script.";
+        alert("Success. Public token is in the console.");
+      },
+      onExit(err, metadata) {
+        console.log("EXIT err:", err);
+        console.log("EXIT metadata:", metadata);
+        if (metadata?.link_session_id) console.log("link_session_id:", metadata.link_session_id);
+        statusEl.textContent = "Link exited. See console for details.";
+      },
+      onEvent(eventName, metadata) {
+        console.log("Link event:", eventName, metadata);
+      }
     });
 
-    handler.open();
-
-    // Optional logging
-    handler._options.onEvent = (eventName, metadata) => {
-      console.log("Link event (redirect):", eventName, metadata);
-    };
-    handler._options.onExit = (err, metadata) => {
-      console.log("EXIT (redirect) err:", err);
-      console.log("EXIT (redirect) metadata:", metadata);
-    };
+    document.getElementById("link-btn").onclick = () => handler.open();
   </script>
 </body>
 </html>
