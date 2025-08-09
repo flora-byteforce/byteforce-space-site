@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Plaid Link</title>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+</head>
+<body>
+  <button id="link-button">Connect Bank</button>
+  <script>
+    const LINK_TOKEN = "PASTE_YOUR_LINK_TOKEN_HERE"; // same token used in oauth-redirect.html
+    const handler = Plaid.create({
+      token: LINK_TOKEN,
+      onSuccess: function(public_token, metadata) {
+        console.log("Public Token:", public_token);
+        alert("Public token printed to the browser console.");
+      },
+      onExit: function(err, metadata) {
+        if (err) console.error("Exit error:", err);
+      }
+    });
+    document.getElementById("link-button").onclick = () => handler.open();
+  </script>
+</body>
+</html>
