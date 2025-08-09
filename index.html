@@ -1,18 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Byteforce Budget Dashboard</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
-    h1 { color: #333; }
-    .section { margin-bottom: 30px; }
-    table { width: 100%%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #eee; }
-  </style>
+  <title>Plaid Link</title>
+
+  <!-- CSP update for Chase OAuth reCAPTCHA -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    connect-src https://*.plaid.com https://*.plaid.io https://www.google.com https://www.gstatic.com;
+    script-src 'self' 'unsafe-inline' https://*.plaid.com https://www.google.com https://www.gstatic.com;
+    frame-src https://*.plaid.com https://www.google.com;
+  ">
 </head>
 <body>
   <h1>💰 Byteforce Budget Summary</h1>
